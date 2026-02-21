@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Models\SamplingItem;
 use Spatie\ResponseCache\Facades\ResponseCache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,9 +41,11 @@ class SamplingController extends Controller
         $sample_collection_location = Arr::get($filter, 'sample_collection_location');
         $request_sender_name    = Arr::get($filter, 'request_sender_name');
         $collection_staff_name  = Arr::get($filter, 'collection_staff_name');
+        $type_of_requests = Arr::get($filter, 'type_of_requests');
+        $type_of_samples = Arr::get($filter, 'type_of_samples');
 
         $cities = City::pluck('name', 'id');
-    $city_id = Arr::get($filter, 'city_id'); 
+       $city_id = Arr::get($filter, 'city_id'); 
     
         $data = Sampling::query();
 
@@ -50,6 +53,17 @@ class SamplingController extends Controller
         if ($warehouse) {
             $data->where('sector_id', $warehouse);
         }
+
+        if($type_of_requests){
+            $data->where('type_of_requests', $type_of_requests);
+        }
+
+        if($type_of_samples){
+            $data->whereHas('samplingItems', function ($query) use ($type_of_samples) {
+                $query->where('type_of_samples', $type_of_samples);
+            });
+        }
+
         // Filter by workplace_id
         if ($workplace_id) {
             $data->where('workplace_id', $workplace_id);
@@ -100,7 +114,6 @@ class SamplingController extends Controller
             $data = Sampling::orderBy('status_order','DESC')->orderBy('id', 'DESC')->paginate($limit);
         else
             $data = $data->orderBy('status_order','DESC')->orderBy('id', 'DESC')->paginate($limit)->withQueryString();
-        
         return view('backend.pages.samplings.index', compact('data', 'filter','workplaces', 'sectors','commercial_registration_number','cities','sample_collection_location'));
     }
     public function show($id)

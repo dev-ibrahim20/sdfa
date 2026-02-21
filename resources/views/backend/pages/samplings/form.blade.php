@@ -68,7 +68,7 @@
                                     'class' => 'form-control',
                                     'placeholder' => __('lang.form_submission_time'),
                                     'disabled' => null,
-                                    
+
                                 ]) !!}
                             @else
                                 {!! Form::time('form_submission_time', Request::is('*/samplings/*/edit') ? null : now('Asia/Riyadh')->format('H:i'), [
@@ -79,7 +79,7 @@
                             @endcan
                         </div>
                     </div>
-                    
+
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.form_submission_date') }}</label>
@@ -88,7 +88,7 @@
                                     'class' => 'form-control',
                                     'placeholder' => __('lang.form_submission_date'),
                                      'disabled' => null,
-                                    
+
                                 ]) !!}
                             @else
                                 {!! Form::date('form_submission_date', Request::is('*/samplings/*/edit') ? null : now()->format('Y-m-d'), [
@@ -108,7 +108,7 @@
                                 {{ __('lang.container_responsible_contact_number') }} </label>
                             {!! Form::text('container_responsible_contact_number', null, [
                                 'class' => 'form-control',
-                            
+
                                 'placeholder' => __('lang.container_responsible_contact_number'),
                             ]) !!}
                         </div>
@@ -133,7 +133,7 @@
                             </label>
                             {!! Form::text('shipping_bill_number', null, [
                                 'class' => 'form-control',
-                            
+
                                 'placeholder' => __('lang.shipping_bill_number'),
                             ]) !!}
                         </div>
@@ -147,7 +147,7 @@
                             </label>
                             {!! Form::text('container_number', null, [
                                 'class' => 'form-control',
-                            
+
                                 'placeholder' => __('lang.container_number'),
                             ]) !!}
                         </div>
@@ -213,7 +213,7 @@
                             {!! Form::text('transportation_method', null, [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.transportation_method'),
-                                   
+
                             ]) !!}
                         </div>
                     </div>
@@ -235,15 +235,21 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.type_of_requests') }} </label>
+                            <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.type_of_requests') }} <span
+                                    class="text-danger">*</span></label>
                             {!! Form::select(
                                 'type_of_requests',
                                 [
                                     'routine' => 'روتينيه',
                                     'emergency' => 'طوارئ',
-                                    'monitor' => 'رصد',
-                                    'report' => 'بلاغ',
+                                    'monitor' => 'رصد وتقصي',
+                                    'report' => 'بلاغات وشكاوي',
+                                    'poisoning_incidents' => 'حوادث تسمم',
+                                    'export' => 'تصدير',
+                                    'license' => 'ترخيص',
+                                    'inspection_and_clearance_of_shipment' => 'معاينة وفسح إرسالية',
                                     'inspection_campaigns' => 'حملات تفتيشيه',
+                                    'Product_withdrawal_and_analysis' => 'سحب وتحليل منتج',
                                     'efficiency'=> 'التحقق من كفاْة شهادة المطابقه',
                                     'other'=> 'اخري'
                                 ],
@@ -251,13 +257,14 @@
                                 [
                                     'class' => 'form-control',
                                     'placeholder' => __('lang.type_of_requests'),
+                                    'required' => 'required',
                                 ],
                             ) !!}
                         </div>
                     </div>
-             
+
                 <div id="formContainer">
-                @if(isset($data->samplingItems) && count($data->samplingItems) > 0)   
+                @if(isset($data->samplingItems) && count($data->samplingItems) > 0)
                 @foreach($data->samplingItems as $key => $value)
                     <div class="row sampling-row">
                         {!! Form::hidden('sampling_item_id[]', $value->id) !!}
@@ -307,7 +314,7 @@
                                 [
                                     'class' => 'form-control',
                                     'placeholder' => __('lang.type_of_samples'),
-                                    'required' => 'required', 
+                                    'required' => 'required',
                                 ],
                             ) !!}
                         </div>
@@ -392,7 +399,7 @@
                         @endcan
                     </div>
                 </div>
-                @endforeach 
+                @endforeach
                @else
                 <div class="row sampling-row">
                     {!! Form::hidden('sampling_item_id[]', null) !!}
@@ -441,7 +448,7 @@
                             [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.type_of_samples'),
-                                'required' => 'required', 
+                                'required' => 'required',
                             ],
                         ) !!}
                     </div>
@@ -680,7 +687,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    
+
                               <div class="col-md-4">
                         <div class="form-group">
                             <label for="projectinput1">
@@ -842,7 +849,7 @@
                             {!! Form::file('image1', null, ['class' => 'form-control']) !!}
                         </div>
                     </div>
-                    
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="projectinput4">{{ __('lang.image2') }}</label>
@@ -857,7 +864,7 @@
                             {!! Form::file('image2', null, ['class' => 'form-control']) !!}
                         </div>
                     </div>
-                    
+
                     {{-- <div class="col-md-4">
                         <div class="form-group">
                             <label for="projectinput4"> {{ __('lang.image3') }} </label>
@@ -889,7 +896,7 @@
     </div>
 </div>
 
-                    
+
                     <input type="hidden" name="repate" value="{{ request()->repate ?? 0 }}">
 
                 </div>
@@ -952,19 +959,19 @@
         $(document).on("click", ".repeatButton", function () {
             // Clone the first row template
             var clonedForm = $(".sampling-row").first().clone();
-    
+
             // Clear input values in the cloned form
             clonedForm.find('input, select').val('');
-    
+
             // Append the cloned form to the container
             $("#formContainer").append(clonedForm);
         });
-    
+
         // Handle remove button click
         $(document).on("click", ".removeButton", function () {
             // Count the number of form rows
             var formRows = $(".sampling-row").length;
-            
+
             // Only allow removal if there's more than one row
             if (formRows > 1) {
                 // Remove the parent div of the clicked remove button
@@ -977,7 +984,7 @@
     });
     </script>
 
- 
+
     <script>
         $(document).ready(function() {
             $('form').on('submit', function() {
