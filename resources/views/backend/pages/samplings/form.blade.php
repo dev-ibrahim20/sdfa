@@ -296,6 +296,7 @@
                     <div class="col-md-2">
                         <div class="form-group[]">
                             <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.type_of_samples') }}
+                                <span class="text-danger">*</span>
                             </label>
                             {!! Form::select(
                                 'type_of_samples[]',

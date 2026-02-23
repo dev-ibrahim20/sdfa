@@ -19,6 +19,47 @@
             {!! Form::select('workplace_id', $workplaces,Arr::get($filter,'workplace_id'), ['class' => 'form-control'  , 'placeholder'=> __('lang.workplace_address')] ) !!}
             </div>
             </div>
+
+                            <div class="col-md-2">
+        <div class="form-group">
+        <label for="projectinput1"><i class="fa fa-list"></i> {{__('lang.type_of_requests')}} </label>
+        {!! Form::select('type_of_requests', [
+                'routine' => 'روتينيه',
+                'emergency' => 'طوارئ',
+                'monitor' => 'رصد وتقصي',
+                'report' => 'بلاغات وشكاوي',
+                'poisoning_incidents' => 'حوادث تسمم',
+                'export' => 'تصدير',
+                'license' => 'ترخيص',
+                'inspection_and_clearance_of_shipment' => 'معاينة وفسح إرسالية',
+                'inspection_campaigns' => 'حملات تفتيشيه',
+                'Product_withdrawal_and_analysis' => 'سحب وتحليل منتج',
+                'efficiency'=> 'التحقق من كفاْة شهادة المطابقه',
+                'other'=> 'اخري'
+            ],
+            Arr::get($filter,'type_of_requests'), ['class' => 'form-control'  , 'placeholder'=> __('lang.type_of_requests')] ) !!}
+        </div>
+        </div>
+                <div class="col-md-2">
+        <div class="form-group">
+        <label for="projectinput1"><i class="fa fa-list"></i> {{__('lang.type_of_samples')}} </label>
+        {!! Form::select('type_of_samples', [
+                'غذائيه' => 'غذائيه',
+                'دوائيه' => 'دوائيه',
+                'مستحضرات تجميل' => 'مستحضرات تجميل',
+                'تبغ' => 'تبغ',
+                'اعلاف' => 'اعلاف',
+                'مبيدات' => 'مبيدات',
+                'مواد بيطرية' => 'مواد بيطرية',
+                'اجهزة طبية'=>'اجهزة طبية',
+                'اخري' => 'اخري',
+            ],
+            Arr::get($filter,'type_of_samples'), ['class' => 'form-control'  , 'placeholder'=> __('lang.type_of_samples')] ) !!}
+        </div>
+        </div>
+
+
+
                   <div class="col-md-1">
         <div class="form-group">
         <label for="projectinput1"><i class="fa fa-list"></i> {{__('lang.status')}} </label>

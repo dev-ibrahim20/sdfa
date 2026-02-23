@@ -45,11 +45,24 @@ class ReportsController extends Controller
         $commercial_registration_number = Arr::get($filter, 'commercial_registration_number');
         $order_number = Arr::get($filter, 'order_number');
         $sample_collection_location = Arr::get($filter, 'sample_collection_location');
+        $type_of_requests = Arr::get($filter, 'type_of_requests');
+        $type_of_samples = Arr::get($filter, 'type_of_samples');
 
         // $data = Sampling::query();
         $data = Sampling::withTrashed()->with(['samplingItems' => function($query) {
             $query->withTrashed(); // إضافة البيانات المحذوفة
         }]); // Eager load the sampleItem relationship
+
+
+        if($type_of_requests){
+            $data->where('type_of_requests', $type_of_requests);
+        }
+
+        if($type_of_samples){
+            $data->whereHas('samplingItems', function ($query) use ($type_of_samples) {
+                $query->where('type_of_samples', $type_of_samples);
+            });
+        }
 
         // Filter by sector
         if ($warehouse) {
