@@ -15,7 +15,10 @@ class City extends Model
         return LogOptions::defaults()->logFillable()->logOnlyDirty();
     }
 
-
+    public function workplace()
+    {
+        return $this->hasMany(Workplace::class);
+    }
 
 
 }

@@ -11,10 +11,11 @@ use Auth;
 use Cache;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-use LogsActivity;
+use LogsActivity, Authorizable;
 
 public function getActivitylogOptions(): LogOptions
 {

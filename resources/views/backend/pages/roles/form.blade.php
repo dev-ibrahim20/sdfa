@@ -72,6 +72,10 @@
 <tr>
      <td> حذف صنف من العينة </td>
     <td> <input name='permissions[]' value='delete_sampling_item' type="checkbox" @if(isset($data->id) && $data->permissions->contains('name', 'delete_sampling_item')) checked @endif > </td>   
+</tr>
+<tr>
+     <td> تعديل تاريخ ووقت تسليم العينة </td>
+    <td> <input name='permissions[]' value='edit_sample_delivery_datetime' type="checkbox" @if(isset($data->id) && $data->permissions->contains('name', 'edit_sample_delivery_datetime')) checked @endif > </td>   
 </tr>    
 </table>
 
