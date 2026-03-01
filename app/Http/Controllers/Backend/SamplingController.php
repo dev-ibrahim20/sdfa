@@ -16,9 +16,11 @@ use Arr;
 use Illuminate\Support\Facades\Log;
 use App\Mail\SamplingCreated;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class SamplingController extends Controller
 {
+    use Authorizable;
 
     public function __construct()
     {
@@ -277,6 +279,7 @@ class SamplingController extends Controller
         if (Gate::denies('edit_samplings')) {
             abort(403);
         }
+        $sample = Sampling::find($id);
         $requestData = $request->except('_token', 'repate', 'product_name', 'product_type', 'manufacturer_company', 'batch_numbers', 'number_of_samples', 'type_of_samples', 'weight', 'sample_delivery_date', 'sample_delivery_time', 'sampling_item_id', 'production_date', 'expiry_date', 'image1', 'image2', 'image3', 'created_at', 'updated_at');
         // Get the arrays from the request
   
@@ -291,9 +294,12 @@ class SamplingController extends Controller
         $productionDates = $request->input('production_date', []);
         $expiryDates = $request->input('expiry_date', []);
 
-        if ($request->has('status') && !is_null($request->input('status')) && $request->input('status') !== '') {
+        if ($request->has('status') && !is_null($request->input('status')) && $request->input('status') !== '' && $sample->sample_delivery_date == null && $sample->sample_delivery_time == null) {
             $requestData['sample_delivery_date'] = $request->input('sample_delivery_date');
             $requestData['sample_delivery_time'] = $request->input('sample_delivery_time');
+        }else{
+            $requestData['sample_delivery_date'] = $sample->sample_delivery_date;
+            $requestData['sample_delivery_time'] = $sample->sample_delivery_time;
         }
 
         if ($request->repate == 1) {
@@ -328,7 +334,6 @@ class SamplingController extends Controller
             
         } else {
             $sample = Sampling::find($id);
-            
             // تحديث البيانات مع الحفاظ على إدارة الوقت بشكل تلقائي
             $sample->update($requestData);
 

@@ -41,6 +41,7 @@
                             <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.workplace_address') }} <span
                                     class="text-danger">*</span></label>
                             {!! Form::select('workplace_id', $workplaces, isset($data) ? $data->workplace_id : null, [
+                                'id' => 'workplace_id',
                                 'class' => 'form-control',
                                 'required' => 'required',
                                 'placeholder' => __('lang.workplace_address'),
@@ -703,17 +704,7 @@
                         </div>
                     </div>
 
-                    {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="projectinput1">
-                                    <i class="fe-list"></i> {{ __('lang.product_safety_verification') }}
-                                </label>
-                                {!! Form::text('product_safety_verification', null, [
-                                    'class' => 'form-control',
-                                    'placeholder' => __('lang.product_safety_verification'),
-                                ]) !!}
-                            </div>
-                        </div>       --}}
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="projectinput1">
@@ -727,17 +718,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="projectinput1">
-                                <i class="fe-list"></i> {{ __('lang.request_date') }}
-                            </label>
-                            {!! Form::date('request_date', null, [
-                                'class' => 'form-control',
-                                'placeholder' => __('lang.request_date'),
-                            ]) !!}
-                        </div>
-                    </div>
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="projectinput1">
@@ -757,17 +738,6 @@
                             {!! Form::text('collection_staff_name', null, [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.collection_staff_name'),
-                            ]) !!}
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="projectinput1">
-                                <i class="fe-list"></i> {{ __('lang.collection_date') }}
-                            </label>
-                            {!! Form::date('collection_date', null, [
-                                'class' => 'form-control',
-                                'placeholder' => __('lang.collection_date'),
                             ]) !!}
                         </div>
                     </div>
@@ -799,21 +769,37 @@
                             <label for="projectinput1">
                                 <i class="fe-list"></i> {{ __('lang.sample_delivery_date') }}
                             </label>
-                            {!! Form::date('sample_delivery_date', null, [
+                            @can('edit_sample_delivery_datetime')
+                            {!! Form::date('sample_delivery_date', (Request::is('*/samplings/*/edit') && isset($data) && $data->sample_delivery_date == null) ? now('Asia/Riyadh')->format('Y-m-d') : (isset($data->sample_delivery_date) ? $data->sample_delivery_date : null), [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.sample_delivery_date'),
                             ]) !!}
+                            @else
+                            {!! Form::date('sample_delivery_date', Request::is('*/samplings/*/edit') && isset($data) && $data->sample_delivery_date == null ? now('Asia/Riyadh')->format('Y-m-d') : (isset($data->sample_delivery_date) ? $data->sample_delivery_date : null), [
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.sample_delivery_date'),
+                                'readonly' => 'readonly'
+                            ]) !!}
+                            @endcan
                         </div>
                     </div>
-                      <div class="col-md-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="projectinput1">
                                 <i class="fe-list"></i> {{ __('lang.sample_delivery_time') }}
                             </label>
-                            {!! Form::time('sample_delivery_time', null, [
+                            @can('edit_sample_delivery_datetime')
+                            {!! Form::time('sample_delivery_time', Request::is('*/samplings/*/edit') && isset($data) && $data->sample_delivery_time == null ? now('Asia/Riyadh')->format('H:i') : (isset($data->sample_delivery_time) ? $data->sample_delivery_time : null), [
                                 'class' => 'form-control',
                                 'placeholder' => __('lang.sample_delivery_time'),
                             ]) !!}
+                            @else
+                            {!! Form::time('sample_delivery_time', Request::is('*/samplings/*/edit') && isset($data) && $data->sample_delivery_time == null ? now('Asia/Riyadh')->format('H:i') : (isset($data->sample_delivery_time) ? $data->sample_delivery_time : null), [
+                                'class' => 'form-control',
+                                'placeholder' => __('lang.sample_delivery_time'),
+                                'readonly' => 'readonly'
+                            ]) !!}
+                            @endcan
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -942,7 +928,7 @@
 
                 $('#city_id').change(function() {
                     var cityId = $(this).val();
-                    $.get('{{ config('settings.BackendPath') }}/get-workplaces/' + cityId, function(data) {
+                    $.get('get-workplaces/' + cityId, function(data) {
                         // Update the workplace dropdown with new options based on the AJAX response
                         $('#workplace_id').empty();
                         $.each(data, function(key, value) {
@@ -951,6 +937,7 @@
                         });
                     });
                 });
+
             });
         </script>
 
