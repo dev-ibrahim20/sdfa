@@ -11,7 +11,7 @@
                         <div class="form-group">
                             <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.sector') }} <span
                                     class="text-danger">*</span></label>
-
+                                
                             {!! Form::select('sector_id', $sectors, isset($data) ? $data->sector_id : null, [
                                 'id' => 'sector_id',
                                 'class' => 'form-control',
@@ -25,8 +25,9 @@
                         <div class="form-group">
                             <label for="projectinput1"><i class="fe-list"></i> {{ __('lang.city') }} <span
                                     class="text-danger">*</span></label>
-
-                            {!! Form::select('city_id', $cities, isset($data) ? $data->city_id : null, [
+                                
+                            {!! Form::select('city_id', $cities, isset($data) ? $data->city_id : null, 
+                            [
                                 'id' => 'city_id',
                                 'class' => 'form-control',
                                 'required' => 'required',
@@ -919,6 +920,10 @@
                     $.get('get-cities/' + sectorId, function(data) {
                         // Update the city dropdown with new options based on the AJAX response
                         $('#city_id').empty();
+                        
+                        // Add default option
+                        $('#city_id').append('<option value="">اختر المدينة</option>');
+                        
                         $.each(data, function(key, value) {
                             $('#city_id').append('<option value="' + key + '">' + value +
                                 '</option>');
@@ -931,6 +936,10 @@
                     $.get('get-workplaces/' + cityId, function(data) {
                         // Update the workplace dropdown with new options based on the AJAX response
                         $('#workplace_id').empty();
+                        
+                        // Add default option
+                        $('#workplace_id').append('<option value="">اختر الفرع</option>');
+                        
                         $.each(data, function(key, value) {
                             $('#workplace_id').append('<option value="' + key + '">' + value +
                                 '</option>');
