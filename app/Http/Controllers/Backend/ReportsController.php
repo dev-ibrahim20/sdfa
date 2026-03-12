@@ -96,12 +96,12 @@ if (!empty($filter['from']) && !empty($filter['to'])) {
     $toYear   = date('Y', strtotime($to));
 
     // طبق الشرط فقط لو مش searching في سنة 2024
-    if (!($fromYear == 2024 && $toYear == 2024)) {
-        $data->whereNotBetween('collection_date', [
-            '2024-01-01',
-            '2024-12-30'
-        ]);
-    }
+    // if (!($fromYear == 2024 && $toYear == 2024)) {
+    //     $data->whereNotBetween('collection_date', [
+    //         '2024-01-01',
+    //         '2024-12-30'
+    //     ]);
+    // }
 }
 
         // dd($data->paginate(20));

@@ -91,18 +91,15 @@ public function index(Request $request)
     $startDate = $request->start_date ?? now()->startOfMonth()->toDateString();
     $endDate   = $request->end_date ?? now()->endOfMonth()->toDateString();
 
-    $isSearchIn2024 = Carbon::parse($startDate)->year == 2024
-        && Carbon::parse($endDate)->year == 2024;
+    // $isSearchIn2024 = Carbon::parse($startDate)->year == 2024
+    //     && Carbon::parse($endDate)->year == 2024;
 
-    $exclude2024Range = ['2024-01-01', '2024-12-30'];
+    // $exclude2024Range = ['2024-01-01', '2024-12-30'];
 
     // Counting all SamplingItems
     $totalSamples = SamplingItem::withTrashed()
         ->join('samplings', 'sampling_items.sampling_id', '=', 'samplings.id')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->count();
 
     // Counting delivered
@@ -110,9 +107,6 @@ public function index(Request $request)
         ->join('samplings', 'sampling_items.sampling_id', '=', 'samplings.id')
         ->where('samplings.status', 'delivered')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->count();
 
     // Counting rejected
@@ -120,9 +114,6 @@ public function index(Request $request)
         ->join('samplings', 'sampling_items.sampling_id', '=', 'samplings.id')
         ->where('samplings.status', 'rejected')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->count();
 
     // Aggregated counts
@@ -135,9 +126,6 @@ public function index(Request $request)
     ")
         ->leftJoin('samplings', 'sampling_items.sampling_id', '=', 'samplings.id')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->first();
 
     // Statistics by sector
@@ -145,9 +133,6 @@ public function index(Request $request)
         ->selectRaw('COUNT(sampling_items.id) as count')
         ->leftJoin('sampling_items', 'samplings.id', '=', 'sampling_items.sampling_id')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->groupBy('samplings.sector_id')
         ->get();
 
@@ -156,9 +141,6 @@ public function index(Request $request)
         ->selectRaw('COUNT(sampling_items.id) as count')
         ->leftJoin('sampling_items', 'samplings.id', '=', 'sampling_items.sampling_id')
         ->whereBetween(\DB::raw('DATE(samplings.created_at)'), [$startDate, $endDate])
-        ->when(!$isSearchIn2024, function ($q) use ($exclude2024Range) {
-            $q->whereNotBetween(\DB::raw('DATE(samplings.collection_date)'), $exclude2024Range);
-        })
         ->groupBy('samplings.workplace_id')
         ->get();
 
