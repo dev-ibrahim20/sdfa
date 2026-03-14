@@ -334,6 +334,7 @@ class SamplingController extends Controller
             
         } else {
             $sample = Sampling::find($id);
+            $sample->status_order = 0;
             // تحديث البيانات مع الحفاظ على إدارة الوقت بشكل تلقائي
             $sample->update($requestData);
 
@@ -450,7 +451,7 @@ class SamplingController extends Controller
         $sampling = Sampling::findOrFail($id);
 
         // Update the 'closed' column based on the request input
-        $sampling->update([
+        $sampling->update(attributes: [
             'closed' => $closed, // assuming default is 0
             'status_order'=> 0
         ]);
