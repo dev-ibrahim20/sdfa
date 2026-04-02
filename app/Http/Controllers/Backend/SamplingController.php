@@ -141,17 +141,17 @@ class SamplingController extends Controller
         }
     
         // التحقق من عدم وجود عينة مكررة بنفس البيانات في آخر 5 دقائق
-        $recentSampling = Sampling::where('commercial_registration_number', $request->commercial_registration_number)
-            ->where('workplace_id', $request->workplace_id)
-            ->where('sector_id', $request->sector_id)
-            ->where('created_at', '>=', now()->subMinutes(5))
-            ->first();
+        // $recentSampling = Sampling::where('commercial_registration_number', $request->commercial_registration_number)
+        //     ->where('workplace_id', $request->workplace_id)
+        //     ->where('sector_id', $request->sector_id)
+        //     ->where('created_at', '>=', now()->subMinutes(5))
+        //     ->first();
     
-        if ($recentSampling) {
-            Session::flash('msg', 'تم إنشاء عينة بنفس البيانات مؤخراً. يرجى المراجعة.');
-            Session::flash('alert', 'warning');
-            return redirect()->back()->withInput();
-        }
+        // if ($recentSampling) {
+        //     Session::flash('msg', 'تم إنشاء عينة بنفس البيانات مؤخراً. يرجى المراجعة.');
+        //     Session::flash('alert', 'warning');
+        //     return redirect()->back()->withInput();
+        // }
     
         // استخدام Database Transaction لضمان عدم حدوث مشاكل
         try {
