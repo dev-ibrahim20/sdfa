@@ -143,7 +143,7 @@
     
     <td>{{$row->samplingItems()->first()->product_name ?? '-'}}</td>
     <td>{{$row->customs_clearance_contact_number ?? '-'}}</td>
-    <td>{{ $row->status_order == 0 ? \Carbon\Carbon::parse($row->created_at)->format('Y-m-d') : '-' }}</td>
+    <td>{{ $row->status_order == 0 && $row->request_date ?  $row->request_date : \Carbon\Carbon::parse($row->created_at)->format('Y-m-d')}}</td>
     <td>{{$row->request_sender_name}}</td>
     <td>{{$row->workplace->name ?? '-'}}</td>
     <td>   

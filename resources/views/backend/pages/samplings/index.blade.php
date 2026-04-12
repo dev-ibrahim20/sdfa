@@ -173,7 +173,17 @@
         {{$row->sample_collection_location ?? '-'}}-{{$row->container_location ?? '-'}}
     @endif
 </td>
-<td>{{ $row->status_order == 0 ? \Carbon\Carbon::parse($row->created_at)->format('Y-m-d') : '-' }}</td>
+<td>
+    @if($row->status_order == 0)
+        @if($row->form_submission_date)
+            {{ \Carbon\Carbon::parse($row->form_submission_date)->format('Y-m-d') }}
+        @else
+            {{ \Carbon\Carbon::parse($row->created_at)->format('Y-m-d') }}
+        @endif
+    @else
+        {{ "-" }}
+    @endif
+</td>
 <td>{{$row->request_sender_name}}</td>
 <td>{{$row->collection_staff_name ?? '-'}}</td>
 <td>{{$row->workplace->name ?? '-'}}</td>
